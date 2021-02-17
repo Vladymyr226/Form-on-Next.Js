@@ -25,21 +25,9 @@ export default function Home() {
   const [dateError, setDateError] = useState("Date is incorrect");
   //Data of error by teh
   const [TehError, setTehError] = useState("Choose more teh");
-  const [selectedTeh, setSelectedTeh] = useState({
-    CPlus: false,
-    CPlusV: "C/C++",
-    CSharp: false,
-    CSharpV: "C#",
-    Java: false,
-    JavaV: "Java",
-    JS: false,
-    JSV: "Java Script",
-    php: false,
-    phpV: "PHP",
-    sql: false,
-    sqlV: "SQL/noSQL",
-  });
+  const [selectedTeh, setSelectedTeh] = useState({});
   const [CountTeh, setCountTeh] = useState(0);
+
   const [Gender, setGender] = useState("Male");
 
   //validation
@@ -131,92 +119,99 @@ export default function Home() {
     console.log(Gender);
   };
 
-  const tehHandler = (e) => {
+  const tehHandlerCPlus = (e) => {
+    //По хорошему убрать CountTeh, но метод selectedTeh.length не работает также как и for( in selectedTeh)
     if (e.target.checked) {
       setCountTeh(CountTeh + 1);
-      switch (e.target.value) {
-        case "C/C++":
-          selectedTeh.CPlus = true;
-          break;
-        case "C#":
-          selectedTeh.CSharp = true;
-          break;
-        case "Java":
-          selectedTeh.Java = true;
-          break;
-        case "Java Script":
-          selectedTeh.JS = true;
-          break;
-        case "PHP":
-          selectedTeh.php = true;
-          break;
-        case "SQL/noSQL":
-          selectedTeh.sql = true;
-          break;
-      }
-    } else if (!e.target.checked) {
-      setCountTeh(CountTeh - 1);
-      switch (e.target.value) {
-        case "C/C++":
-          selectedTeh.CPlus = false;
-        case "C#":
-          selectedTeh.CSharp = false;
-        case "Java":
-          selectedTeh.Java = false;
-        case "Java Script":
-          selectedTeh.JS = false;
-        case "PHP":
-          selectedTeh.php = false;
-        case "SQL/noSQL":
-          selectedTeh.sql = false;
-      }
     }
+    else {
+      setCountTeh(CountTeh - 1);
+    }
+    setSelectedTeh({
+      ...selectedTeh,
+      CPlus: e.target.checked
+    });
+  };
+  const tehHandlerCSharp = (e) => {
+    if (e.target.checked) {
+      setCountTeh(CountTeh + 1);
+    }
+    else {
+      setCountTeh(CountTeh - 1);
+    }
+    setSelectedTeh({
+      ...selectedTeh,
+      CSharp: e.target.checked
+    });
+  };
+  const tehHandlerJava = (e) => {
+    if (e.target.checked) {
+      setCountTeh(CountTeh + 1);
+    }
+    else {
+      setCountTeh(CountTeh - 1);
+    }
+    setSelectedTeh({
+      ...selectedTeh,
+      Java: e.target.checked
+    });
+  };
+  const tehHandlerJS = (e) => {
+    if (e.target.checked) {
+      setCountTeh(CountTeh + 1);
+    }
+    else {
+      setCountTeh(CountTeh - 1);
+    }
+    setSelectedTeh({
+      ...selectedTeh,
+      JS: e.target.checked
+    });
+  };
+  const tehHandlerPhp = (e) => {
+    if (e.target.checked) {
+      setCountTeh(CountTeh + 1);
+    }
+    else {
+      setCountTeh(CountTeh - 1);
+    }
+    setSelectedTeh({
+      ...selectedTeh,
+      php: e.target.checked
+    });
+  };
+  const tehHandlerSql = (e) => {
+    if (e.target.checked) {
+      setCountTeh(CountTeh + 1);
+    }
+    else {
+      setCountTeh(CountTeh - 1);
+    }
+    setSelectedTeh({
+      ...selectedTeh,
+      sql: e.target.checked
+    });
   };
 
   function SelectedTeh() {
     var teh = "";
-    let COUNT = CountTeh;
     if (selectedTeh.CPlus) {
-      COUNT -= 1;
-      teh += selectedTeh.CPlusV;
-      if (COUNT != 0) {
-        teh += ", ";
-      }
+      teh += "C/C++ ";
     }
     if (selectedTeh.CSharp) {
-      COUNT -= 1;
-      teh += selectedTeh.CSharpV;
-      if (COUNT != 0) {
-        teh += ", ";
-      }
+      teh += "C# ";
     }
     if (selectedTeh.Java) {
-      COUNT -= 1;
-      teh += selectedTeh.JavaV;
-      if (COUNT != 0) {
-        teh += ", ";
-      }
+      teh += "Java ";
     }
     if (selectedTeh.JS) {
-      COUNT -= 1;
-      teh += selectedTeh.JSV;
-      if (COUNT != 0) {
-        teh += ", ";
-      }
+      teh += "Java Script ";
     }
     if (selectedTeh.php) {
-      COUNT -= 1;
-      teh += selectedTeh.phpV;
-      if (COUNT != 0) {
-        teh += ", ";
-      }
+      teh += "PHP ";
     }
     if (selectedTeh.sql) {
-      COUNT -= 1;
-      teh += selectedTeh.sqlV;
-      if (COUNT != 0) {
-        teh += ", ";
-      }
+      teh += "SQL/noSQL ";
     }
     return teh;
   }
@@ -265,17 +260,6 @@ export default function Home() {
       alert("Not all fields are correct");
     }
   }
-
-  //Check number of teh
-  function CheckTeh(count) {
-    if (count < 3) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-
   //----------------------------------Html----------------------------------
   return (
     <div className={styles.container}>
@@ -321,7 +305,7 @@ export default function Home() {
 
                 <label htmlFor="first">Имя</label>
 
-                <div className="errorDiv">&nbsp;{firstError && firstError}</div>
+                <div className="errorDiv">&nbsp;{firstError}</div>
               </span>
               <span className="has-float-label">
                 <input
@@ -334,7 +318,7 @@ export default function Home() {
                   placeholder="Фамилия"
                 />
                 <label htmlFor="last">Фамилия</label>
-                <div className="errorDiv">&nbsp;{secondError && secondError}</div>
+                <div className="errorDiv">&nbsp;{secondError}</div>
               </span>
             </div>
 
@@ -354,7 +338,7 @@ export default function Home() {
                   <label htmlFor="email">E-mail</label>
                 </span>
               </div>
-              <div className="errorDiv">&nbsp;{emailError && emailError}</div>
+              <div className="errorDiv">&nbsp;{emailError}</div>
             </div>
 
             <div className="form-group has-float-label input-group">
@@ -388,7 +372,7 @@ export default function Home() {
                   <label htmlFor="password">Пароль</label>
                 </span>
               </div>
-              <div className="errorDiv">&nbsp;{passwordError && passwordError}</div>
+              <div className="errorDiv">&nbsp;{passwordError}</div>
             </div>
 
             <div className="form-group has-float-label input-group">
@@ -423,7 +407,7 @@ export default function Home() {
                 </span>
               </div>
               <div className="errorDiv">
-                &nbsp;{passwordCheckError && passwordCheckError}
+                &nbsp;{passwordCheckError}
               </div>
             </div>
 
@@ -437,7 +421,7 @@ export default function Home() {
                 name="date"
               />
               <label htmlFor="date">Дата</label>
-              <div className="errorDiv">&nbsp;{dateError && dateError}</div>
+              <div className="errorDiv">&nbsp;{dateError}</div>
             </div>
 
             <div className="d-flex justify-content-center">
@@ -448,7 +432,7 @@ export default function Home() {
               <div className="p-2 flex-fill">
                 <label className="custom-control custom-checkbox">
                   <input
-                    onChange={(e) => tehHandler(e)}
+                    onChange={(e) => tehHandlerCPlus(e)}
                     className="custom-control-input"
                     type="checkbox"
                     name="teh"
@@ -461,7 +445,7 @@ export default function Home() {
               <div className="p-2 flex-fill">
                 <label className="custom-control custom-checkbox">
                   <input
-                    onChange={(e) => tehHandler(e)}
+                    onChange={(e) => tehHandlerCSharp(e)}
                     className="custom-control-input"
                     type="checkbox"
                     name="teh"
@@ -474,7 +458,7 @@ export default function Home() {
               <div className="p-2 flex-fill">
                 <label className="custom-control custom-checkbox">
                   <input
-                    onChange={(e) => tehHandler(e)}
+                    onChange={(e) => tehHandlerJava(e)}
                     className="custom-control-input"
                     type="checkbox"
                     name="teh"
@@ -487,7 +471,7 @@ export default function Home() {
               <div className="p-2 flex-fill">
                 <label className="custom-control custom-checkbox">
                   <input
-                    onChange={(e) => tehHandler(e)}
+                    onChange={(e) => tehHandlerJS(e)}
                     className="custom-control-input"
                     type="checkbox"
                     name="teh"
@@ -500,7 +484,7 @@ export default function Home() {
               <div className="p-2 flex-fill">
                 <label className="custom-control custom-checkbox">
                   <input
-                    onChange={(e) => tehHandler(e)}
+                    onChange={(e) => tehHandlerPhp(e)}
                     className="custom-control-input"
                     type="checkbox"
                     name="teh"
@@ -513,7 +497,7 @@ export default function Home() {
               <div className="p-2 flex-fill">
                 <label className="custom-control custom-checkbox">
                   <input
-                    onChange={(e) => tehHandler(e)}
+                    onChange={(e) => tehHandlerSql(e)}
                     className="custom-control-input"
                     type="checkbox"
                     name="teh"
@@ -524,6 +508,7 @@ export default function Home() {
                 </label>
               </div>
             </div>
+            <div className="errorDiv">&nbsp;{(CountTeh < 3) && TehError}</div>
 
             <br></br>
 
@@ -543,6 +528,7 @@ export default function Home() {
                 />
               </div>
             </div>
+
 
             <div className="d-flex justify-content-center">
               <div className="p-2 flex-fill">
@@ -571,8 +557,6 @@ export default function Home() {
                 </label>
               </div>
             </div>
-
-            <div className="errorDiv">&nbsp;{CheckTeh(CountTeh) && TehError}</div>
 
             <div className="text-xs-center">
               <button
