@@ -5,10 +5,10 @@ import styles from "../styles/Home.module.css";
 
 export default function Home() {
   //Data of name
-  const [first, setFirst] = useState("");
+  const [firstName, setFirst] = useState("");
   const [firstError, setFirstError] = useState("");
   //Data of surname
-  const [second, setSecond] = useState("");
+  const [secondName, setSecond] = useState("");
   const [secondError, setSecondError] = useState("");
   //Data of email
   const [email, setEmail] = useState("");
@@ -22,11 +22,11 @@ export default function Home() {
   const [date, setDate] = useState("");
   const [dateError, setDateError] = useState("");
   //Data of error by teh
-  const [TehError, setTehError] = useState("");
+  const [tehError, setTehError] = useState("");
   const [selectedTeh, setSelectedTeh] = useState({});
   const [CountTeh, setCountTeh] = useState(0);
 
-  const [Gender, setGender] = useState("Male");
+  const [gender, setGender] = useState("Male");
   let previousTehSmaller = true;
   //validation
 
@@ -95,9 +95,9 @@ export default function Home() {
     //Initialization of date
     setDate(e.target.value);
     let now = new Date();
-    let dob = new Date(date);
+    let dateOfBirth = new Date(date);
     //counting years
-    let age = now.getFullYear() - dob.getFullYear();
+    let age = now.getFullYear() - dateOfBirth.getFullYear();
     //checks for normal errors
     if (!e.target.value.length) {
       setDateError("Date can`t be empty");
@@ -109,11 +109,9 @@ export default function Home() {
   };
   const genderHandlerFemale = (e) => {
     setGender("Female");
-    console.log(Gender);
   };
   const genderHandlerMale = (e) => {
     setGender("Male");
-    console.log(Gender);
   };
 
   const tehHandlerCPlus = (e) => {
@@ -241,7 +239,7 @@ export default function Home() {
   function submitRegister(e) {
     e.preventDefault();
     const URL = "http://localhost:3001";
-    var Tehno = SelectedTeh();
+    var tehno = SelectedTeh();
 
     if (
       !firstError &&
@@ -258,13 +256,13 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          first,
-          second,
+          firstName,
+          secondName,
           email,
           password,
           date,
-          Gender,
-          Tehno,
+          gender,
+          tehno,
         }),
       })
         .then((response) => {
@@ -317,26 +315,26 @@ export default function Home() {
               <span className="has-float-label">
                 <input
                   onChange={(e) => firstHandler(e)}
-                  value={first}
+                  value={firstName}
                   className="form-control"
-                  id="first"
+                  id="firstName"
                   type="text"
-                  name="first"
+                  name="firstName"
                   placeholder="Имя"
                 />
 
-                <label htmlFor="first">Имя</label>
+                <label htmlFor="firstName">Имя</label>
 
                 <div className="errorDiv">&nbsp;{firstError}</div>
               </span>
               <span className="has-float-label">
                 <input
                   onChange={(e) => secondHandler(e)}
-                  value={second}
+                  value={secondName}
                   className="form-control"
                   id="last"
                   type="text"
-                  name="second"
+                  name="secondName"
                   placeholder="Фамилия"
                 />
                 <label htmlFor="last">Фамилия</label>
@@ -530,7 +528,7 @@ export default function Home() {
                 </label>
               </div>
             </div>
-            <div className="errorDiv">&nbsp;{TehError}</div>
+            <div className="errorDiv">&nbsp;{tehError}</div>
 
             <br></br>
 
@@ -560,7 +558,7 @@ export default function Home() {
                     className="custom-control-input"
                     type="radio"
                     name="gender"
-                    checked="checked"
+                    checked={(gender == "Male") && "checked"}
                     onChange={(e) => genderHandlerMale(e)}
                   />
                   <span className="custom-control-indicator"></span>
@@ -574,6 +572,7 @@ export default function Home() {
                     className="custom-control-input"
                     type="radio"
                     name="gender"
+                    checked={(gender == "Female") && "checked"}
                     onChange={(e) => genderHandlerFemale(e)}
                   />
                   <span className="custom-control-indicator"></span>
