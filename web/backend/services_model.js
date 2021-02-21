@@ -32,28 +32,35 @@ function fileHandler(string) {
 }
 
 const createUser = (body) => {
-  const { first, second, email, password, date, Gender, Tehno } = body;
+  const { firstName, secondName, email, password, date, gender, tehno } = body;
   fileHandler(
-    JSON.stringify({ first, second, email, password, date, Gender, Tehno })
+    JSON.stringify({
+      firstName,
+      secondName,
+      email,
+      password,
+      date,
+      gender,
+      tehno,
+    })
   );
 
   return new Promise(function (resolve, reject) {
-    console.log(first, second, email, password, date, Gender, Tehno);
+    console.log(firstName, secondName, email, password, date, gender, tehno);
 
     pool.query(
       "INSERT INTO users (name, surname, email, password, dateofbirth, sex, technologies) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [first, second, email, password, date, Gender, Tehno],
+      [firstName, secondName, email, password, date, gender, tehno],
       (error, results) => {
         if (error) {
           reject(error);
         }
-        try {
-          console.log(results);
-
+        console.log(results);
+        if (results.rows[0].id) {
           resolve(`A new user has been added: ${results.rows[0].id},
-                    counter = ${counter++}`);
-        } catch {
-          resolve(`User not found`);
+            counter = ${counter++}`);
+        } else {
+          resolve("User not found");
         }
       }
     );
