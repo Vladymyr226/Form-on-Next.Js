@@ -1,5 +1,5 @@
 const pool = require("./config");
-
+const path = require("path");
 //fs - work with file-system
 var fs = require("fs");
 
@@ -7,17 +7,18 @@ var counter = 1;
 
 //writing data to an external file
 function fileHandler(string) {
-  var filename =
-    "..\\backend\\saved\\" +
+  var filename = path.join(
+    "saved",
     new Date().toJSON().slice(0, 11) +
-    new Date().getUTCHours() +
-    "." +
-    new Date().getUTCMinutes() +
-    "." +
-    new Date().getUTCSeconds() +
-    "." +
-    new Date().getUTCMilliseconds() +
-    ".txt";
+      new Date().getUTCHours() +
+      "." +
+      new Date().getUTCMinutes() +
+      "." +
+      new Date().getUTCSeconds() +
+      "." +
+      new Date().getUTCMilliseconds() +
+      ".txt"
+  );
   console.log(filename);
 
   fs.open(filename, "w", (err) => {
@@ -32,23 +33,9 @@ function fileHandler(string) {
 
 const createUser = (body) => {
   const { first, second, email, password, date, Gender, Tehno } = body;
-  var str =
-    first +
-    " \n" +
-    second +
-    " \n" +
-    email +
-    " \n" +
-    password +
-    " \n" +
-    date +
-    " \n" +
-    Gender +
-    " \n" +
-    Tehno +
-    " \n";
-
-  fileHandler(str);
+  fileHandler(
+    JSON.stringify({ first, second, email, password, date, Gender, Tehno })
+  );
 
   return new Promise(function (resolve, reject) {
     console.log(first, second, email, password, date, Gender, Tehno);
