@@ -29,7 +29,6 @@ export default function MyButton() {
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous" />
             </Head>
 
-
             <div id="users">
                 <h1 >Users:</h1>
 
@@ -40,9 +39,8 @@ export default function MyButton() {
                 </h2>
             </div>
 
-
-
             {" "}
+
             <table className="table mt-5 text-center">
                 <thead>
                     <tr>
