@@ -6,30 +6,28 @@ import styles from "../styles/Home.module.css";
 export default function Home() {
   //Data of name
   const [first, setFirst] = useState("");
-  const [firstError, setFirstError] = useState("Name can`t be empty");
+  const [firstError, setFirstError] = useState("");
   //Data of surname
   const [second, setSecond] = useState("");
-  const [secondError, setSecondError] = useState("Surname can`t be empty");
+  const [secondError, setSecondError] = useState("");
   //Data of email
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("Email can`t be empty");
+  const [emailError, setEmailError] = useState("");
   //Data of password
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
-  const [passwordError, setPasswordError] = useState("Password can`t be empty");
-  const [passwordCheckError, setPasswordCheckError] = useState(
-    "Password can`t be empty"
-  );
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordCheckError, setPasswordCheckError] = useState("");
   //Data of date
   const [date, setDate] = useState("");
-  const [dateError, setDateError] = useState("Date is incorrect");
+  const [dateError, setDateError] = useState("");
   //Data of error by teh
-  const [TehError, setTehError] = useState("Choose more teh");
+  const [TehError, setTehError] = useState("");
   const [selectedTeh, setSelectedTeh] = useState({});
   const [CountTeh, setCountTeh] = useState(0);
 
   const [Gender, setGender] = useState("Male");
-
+  let previousTehSmaller = true;
   //validation
 
   //Check every field
@@ -113,85 +111,109 @@ export default function Home() {
     setGender("Female");
     console.log(Gender);
   };
-
   const genderHandlerMale = (e) => {
     setGender("Male");
     console.log(Gender);
   };
 
   const tehHandlerCPlus = (e) => {
-    //По хорошему убрать CountTeh, но метод selectedTeh.length не работает также как и for( in selectedTeh)
-    if (e.target.checked) {
-      setCountTeh(CountTeh + 1);
-    }
-    else {
-      setCountTeh(CountTeh - 1);
-    }
+    if (e.target.checked) { previousTehSmaller = true; }
+    else { previousTehSmaller = false; }
     setSelectedTeh({
       ...selectedTeh,
       CPlus: e.target.checked
     });
+    tehHandler();
   };
   const tehHandlerCSharp = (e) => {
-    if (e.target.checked) {
-      setCountTeh(CountTeh + 1);
-    }
-    else {
-      setCountTeh(CountTeh - 1);
-    }
+    if (e.target.checked) { previousTehSmaller = true; }
+    else { previousTehSmaller = false; }
     setSelectedTeh({
       ...selectedTeh,
       CSharp: e.target.checked
     });
+    tehHandler();
   };
   const tehHandlerJava = (e) => {
-    if (e.target.checked) {
-      setCountTeh(CountTeh + 1);
-    }
-    else {
-      setCountTeh(CountTeh - 1);
-    }
+    if (e.target.checked) { previousTehSmaller = true; }
+    else { previousTehSmaller = false; }
     setSelectedTeh({
       ...selectedTeh,
       Java: e.target.checked
     });
+    tehHandler();
   };
   const tehHandlerJS = (e) => {
-    if (e.target.checked) {
-      setCountTeh(CountTeh + 1);
-    }
-    else {
-      setCountTeh(CountTeh - 1);
-    }
+    if (e.target.checked) { previousTehSmaller = true; }
+    else { previousTehSmaller = false; }
     setSelectedTeh({
       ...selectedTeh,
       JS: e.target.checked
     });
+    tehHandler();
   };
   const tehHandlerPhp = (e) => {
-    if (e.target.checked) {
-      setCountTeh(CountTeh + 1);
-    }
-    else {
-      setCountTeh(CountTeh - 1);
-    }
+    if (e.target.checked) { previousTehSmaller = true; }
+    else { previousTehSmaller = false; }
     setSelectedTeh({
       ...selectedTeh,
       php: e.target.checked
     });
+    tehHandler();
   };
   const tehHandlerSql = (e) => {
-    if (e.target.checked) {
-      setCountTeh(CountTeh + 1);
-    }
-    else {
-      setCountTeh(CountTeh - 1);
-    }
+    if (e.target.checked) { previousTehSmaller = true; }
+    else { previousTehSmaller = false; }
     setSelectedTeh({
       ...selectedTeh,
       sql: e.target.checked
     });
+    tehHandler();
   };
+  function CountSelectedTeh() {
+    var count = 0;
+    for (let i = 0; i < Object.keys(selectedTeh).length; i++) {
+      switch (Object.keys(selectedTeh)[i]) {
+        case "CPlus": {
+          if (selectedTeh.CPlus) { count += 1; }
+          break;
+        }
+        case "CSharp": {
+          if (selectedTeh.CSharp) { count += 1; }
+          break;
+        }
+        case "Java": {
+          if (selectedTeh.Java) { count += 1; }
+          break;
+        }
+        case "JS": {
+          if (selectedTeh.JS) { count += 1; }
+          break;
+        }
+        case "php": {
+          if (selectedTeh.php) { count += 1; }
+          break;
+        }
+        case "sql": {
+          if (selectedTeh.sql) { count += 1; }
+          break;
+        }
+      }
+    }
+    return count;
+  }
+  function tehHandler() {
+    var countTotalLength;
+    if (previousTehSmaller) { countTotalLength = 1; }
+    else { countTotalLength = -1; }
+    countTotalLength += CountSelectedTeh();
+    if (countTotalLength > 2) {
+      setTehError("")
+    }
+    else {
+      setTehError("Choose more teh");
+    }
+  }
 
   function SelectedTeh() {
     var teh = "";
@@ -218,9 +240,9 @@ export default function Home() {
 
   function submitRegister(e) {
     e.preventDefault();
-
     const URL = "http://localhost:3001";
     var Tehno = SelectedTeh();
+
     if (
       !firstError &&
       !secondError &&
@@ -228,7 +250,7 @@ export default function Home() {
       !passwordCheckError &&
       !passwordError &&
       !dateError &&
-      CountTeh >= 3
+      CountSelectedTeh() >= 3
     ) {
       fetch(`${URL}/user`, {
         method: "POST",
@@ -508,7 +530,7 @@ export default function Home() {
                 </label>
               </div>
             </div>
-            <div className="errorDiv">&nbsp;{(CountTeh < 3) && TehError}</div>
+            <div className="errorDiv">&nbsp;{TehError}</div>
 
             <br></br>
 
@@ -531,6 +553,7 @@ export default function Home() {
 
 
             <div className="d-flex justify-content-center">
+
               <div className="p-2 flex-fill">
                 <label className="custom-control custom-checkbox">
                   <input
@@ -544,6 +567,7 @@ export default function Home() {
                   <span className="custom-control-description">Мужской</span>
                 </label>
               </div>
+
               <div className="p-2 flex-fill">
                 <label className="custom-control custom-checkbox">
                   <input
@@ -556,6 +580,7 @@ export default function Home() {
                   <span className="custom-control-description">Женский</span>
                 </label>
               </div>
+
             </div>
 
             <div className="text-xs-center">
