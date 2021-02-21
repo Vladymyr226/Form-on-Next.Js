@@ -1,12 +1,9 @@
 const express = require("express");
 const app = express();
-
 const services_model = require("./services_model");
-
+var fs = require("fs");
 const PORT = 3001;
-
 app.use(express.json());
-
 //Header files
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -16,7 +13,7 @@ app.use(function (req, res, next) {
   );
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Content-Type, Access-Control-Allowa-Heders"
+    "Content-Type, Access-Control-Allow-Headers"
   );
   next();
 });
@@ -41,7 +38,6 @@ app.get("/", (req, res) => {
       res.status(200).send(response);
     })
     .catch((error) => {
-      console.log("ffff");
       res.status(500).send(error);
     });
 });
