@@ -8,6 +8,7 @@ var counter = 1;
 //writing data to an external file
 function fileHandler(string) {
   var filename = path.join(
+    __dirname,
     "saved",
     new Date().toJSON().slice(0, 11) +
       new Date().getUTCHours() +
@@ -32,25 +33,17 @@ function fileHandler(string) {
 }
 
 const createUser = (body) => {
-  const { firstName, secondName, email, password, date, gender, tehno } = body;
+  const { first, second, email, password, date, Gender, Tehno } = body;
   fileHandler(
-    JSON.stringify({
-      firstName,
-      secondName,
-      email,
-      password,
-      date,
-      gender,
-      tehno,
-    })
+    JSON.stringify({ first, second, email, password, date, Gender, Tehno })
   );
 
   return new Promise(function (resolve, reject) {
-    console.log(firstName, secondName, email, password, date, gender, tehno);
+    console.log(first, second, email, password, date, Gender, Tehno);
 
     pool.query(
       "INSERT INTO users (name, surname, email, password, dateofbirth, sex, technologies) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [firstName, secondName, email, password, date, gender, tehno],
+      [first, second, email, password, date, Gender, Tehno],
       (error, results) => {
         if (error) {
           reject(error);
