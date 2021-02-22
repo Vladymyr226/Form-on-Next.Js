@@ -5,10 +5,10 @@ import styles from "../styles/Home.module.css";
 
 export default function Home() {
   //Data of name
-  const [firstName, setFirst] = useState("");
+  const [first, setFirst] = useState("");
   const [firstError, setFirstError] = useState("");
   //Data of surname
-  const [secondName, setSecond] = useState("");
+  const [second, setSecond] = useState("");
   const [secondError, setSecondError] = useState("");
   //Data of email
   const [email, setEmail] = useState("");
@@ -22,12 +22,11 @@ export default function Home() {
   const [date, setDate] = useState("");
   const [dateError, setDateError] = useState("");
   //Data of error by teh
-  const [tehError, setTehError] = useState("");
+  const [TehError, setTehError] = useState("Choose more technologies");
   const [selectedTeh, setSelectedTeh] = useState({});
   const [CountTeh, setCountTeh] = useState(0);
 
-  const [gender, setGender] = useState("Male");
-  let previousTehSmaller = true;
+  const [Gender, setGender] = useState("Male");
   //validation
 
   //Check every field
@@ -95,9 +94,9 @@ export default function Home() {
     //Initialization of date
     setDate(e.target.value);
     let now = new Date();
-    let dateOfBirth = new Date(date);
+    let dob = new Date(date);
     //counting years
-    let age = now.getFullYear() - dateOfBirth.getFullYear();
+    let age = now.getFullYear() - dob.getFullYear();
     //checks for normal errors
     if (!e.target.value.length) {
       setDateError("Date can`t be empty");
@@ -115,104 +114,49 @@ export default function Home() {
   };
 
   const tehHandlerCPlus = (e) => {
-    if (e.target.checked) { previousTehSmaller = true; }
-    else { previousTehSmaller = false; }
     setSelectedTeh({
       ...selectedTeh,
       CPlus: e.target.checked
     });
-    tehHandler();
   };
   const tehHandlerCSharp = (e) => {
-    if (e.target.checked) { previousTehSmaller = true; }
-    else { previousTehSmaller = false; }
     setSelectedTeh({
       ...selectedTeh,
       CSharp: e.target.checked
     });
-    tehHandler();
   };
   const tehHandlerJava = (e) => {
-    if (e.target.checked) { previousTehSmaller = true; }
-    else { previousTehSmaller = false; }
     setSelectedTeh({
       ...selectedTeh,
       Java: e.target.checked
     });
-    tehHandler();
   };
   const tehHandlerJS = (e) => {
-    if (e.target.checked) { previousTehSmaller = true; }
-    else { previousTehSmaller = false; }
     setSelectedTeh({
       ...selectedTeh,
       JS: e.target.checked
     });
-    tehHandler();
   };
   const tehHandlerPhp = (e) => {
-    if (e.target.checked) { previousTehSmaller = true; }
-    else { previousTehSmaller = false; }
     setSelectedTeh({
       ...selectedTeh,
       php: e.target.checked
     });
-    tehHandler();
   };
   const tehHandlerSql = (e) => {
-    if (e.target.checked) { previousTehSmaller = true; }
-    else { previousTehSmaller = false; }
     setSelectedTeh({
       ...selectedTeh,
       sql: e.target.checked
     });
-    tehHandler();
   };
+
   function CountSelectedTeh() {
     var count = 0;
     for (let i = 0; i < Object.keys(selectedTeh).length; i++) {
-      switch (Object.keys(selectedTeh)[i]) {
-        case "CPlus": {
-          if (selectedTeh.CPlus) { count += 1; }
-          break;
-        }
-        case "CSharp": {
-          if (selectedTeh.CSharp) { count += 1; }
-          break;
-        }
-        case "Java": {
-          if (selectedTeh.Java) { count += 1; }
-          break;
-        }
-        case "JS": {
-          if (selectedTeh.JS) { count += 1; }
-          break;
-        }
-        case "php": {
-          if (selectedTeh.php) { count += 1; }
-          break;
-        }
-        case "sql": {
-          if (selectedTeh.sql) { count += 1; }
-          break;
-        }
-      }
+      if (Object.values(selectedTeh)[i]) { count += 1; }
     }
     return count;
   }
-  function tehHandler() {
-    var countTotalLength;
-    if (previousTehSmaller) { countTotalLength = 1; }
-    else { countTotalLength = -1; }
-    countTotalLength += CountSelectedTeh();
-    if (countTotalLength > 2) {
-      setTehError("")
-    }
-    else {
-      setTehError("Choose more teh");
-    }
-  }
-
   function SelectedTeh() {
     var teh = "";
     if (selectedTeh.CPlus) {
@@ -239,7 +183,7 @@ export default function Home() {
   function submitRegister(e) {
     e.preventDefault();
     const URL = "http://localhost:3001";
-    var tehno = SelectedTeh();
+    var Tehno = SelectedTeh();
 
     if (
       !firstError &&
@@ -256,13 +200,13 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          firstName,
-          secondName,
+          first,
+          second,
           email,
           password,
           date,
-          gender,
-          tehno,
+          Gender,
+          Tehno,
         }),
       })
         .then((response) => {
@@ -315,26 +259,26 @@ export default function Home() {
               <span className="has-float-label">
                 <input
                   onChange={(e) => firstHandler(e)}
-                  value={firstName}
+                  value={first}
                   className="form-control"
-                  id="firstName"
+                  id="first"
                   type="text"
-                  name="firstName"
+                  name="first"
                   placeholder="Имя"
                 />
 
-                <label htmlFor="firstName">Имя</label>
+                <label htmlFor="first">Имя</label>
 
                 <div className="errorDiv">&nbsp;{firstError}</div>
               </span>
               <span className="has-float-label">
                 <input
                   onChange={(e) => secondHandler(e)}
-                  value={secondName}
+                  value={second}
                   className="form-control"
                   id="last"
                   type="text"
-                  name="secondName"
+                  name="second"
                   placeholder="Фамилия"
                 />
                 <label htmlFor="last">Фамилия</label>
@@ -528,7 +472,7 @@ export default function Home() {
                 </label>
               </div>
             </div>
-            <div className="errorDiv">&nbsp;{tehError}</div>
+            <div className="errorDiv">&nbsp;{(CountSelectedTeh() < 3) && TehError}</div>
 
             <br></br>
 
@@ -558,7 +502,7 @@ export default function Home() {
                     className="custom-control-input"
                     type="radio"
                     name="gender"
-                    checked={(gender == "Male") && "checked"}
+                    checked={(Gender == "Male") && "checked"}
                     onChange={(e) => genderHandlerMale(e)}
                   />
                   <span className="custom-control-indicator"></span>
@@ -572,7 +516,7 @@ export default function Home() {
                     className="custom-control-input"
                     type="radio"
                     name="gender"
-                    checked={(gender == "Female") && "checked"}
+                    checked={(Gender == "Female") && "checked"}
                     onChange={(e) => genderHandlerFemale(e)}
                   />
                   <span className="custom-control-indicator"></span>
